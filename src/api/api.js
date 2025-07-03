@@ -1,7 +1,8 @@
 import axios from 'axios';
 
+// ✅ Set your actual backend URL here
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: 'https://agrikart-ws-2a-8000.ml.iit-ropar.truefoundry.cloud/',
 });
 
 api.interceptors.request.use((config) => {
