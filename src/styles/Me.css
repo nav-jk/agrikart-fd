@@ -83,6 +83,11 @@
     --gradient-btn-help-hover-start: var(--color-gray-400);
     --gradient-btn-help-hover-end: var(--color-gray-300);
 
+    --gradient-btn-delete-start: #ef4444; /* Red for delete */
+    --gradient-btn-delete-end: #dc2626;
+    --gradient-btn-delete-hover-start: #dc2626;
+    --gradient-btn-delete-hover-end: #b91c1c;
+
 
     /* Status specific colors */
     --status-pending: #ffc107; /* Yellow */
@@ -92,11 +97,19 @@
     --status-cancelled: #dc3545; /* Red */
     --status-processing: #6c757d; /* Gray */
     --status-unknown: #9a9a9a; /* Default gray for unknown status */
+
+    /* Toast Colors */
+    --toast-success-bg: #d1fae5; /* green-100 */
+    --toast-success-text: #065f46; /* green-800 */
+    --toast-error-bg: #fee2e2; /* red-100 */
+    --toast-error-text: #991b1b; /* red-800 */
+    --toast-info-bg: #e0f2fe; /* blue-100 */
+    --toast-info-text: #1e40af; /* blue-800 */
 }
 
 body {
-    font-family: 'Inter', sans-serif;
     margin: 0;
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg-page-light);
     color: var(--text-color-default);
     line-height: 1.6;
@@ -146,7 +159,7 @@ body {
     box-shadow: var(--shadow-xl); /* Stronger shadow */
     max-width: 600px; /* Slightly wider */
     width: 100%;
-    border: 1px solid var(--color-error-border); /* Soft red border */
+    border: 1px solid var(--toast-error-bg); /* Soft red border */
 }
 
 .error-title {
@@ -400,6 +413,7 @@ body {
     padding: 2.5rem;
     border-radius: 16px;
     box-shadow: var(--shadow-lg);
+    box-sizing: border-box;
     border: 1px solid var(--border-card);
 }
 
@@ -636,6 +650,17 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+.delete-btn {
+    background: linear-gradient(135deg, var(--gradient-btn-delete-start), var(--gradient-btn-delete-end));
+    color: var(--text-color-white);
+}
+.delete-btn:hover {
+    background: linear-gradient(135deg, var(--gradient-btn-delete-hover-start), var(--gradient-btn-delete-hover-end));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+
 /* --- New Styles for Address Tab --- */
 .user-address-card {
     background-color: var(--bg-address-card); /* Very light gray background */
@@ -688,6 +713,274 @@ body {
     height: 64px; /* Original size */
     margin-right: 8px;
     vertical-align: middle;
+}
+
+/* --- New Styles for Settings Tab --- */
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Space between setting items */
+    margin-top: 1rem;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-address-card); /* Use light card background */
+    border: 1px solid var(--border-color-light);
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.setting-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.setting-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1em;
+    color: var(--text-color-default);
+    font-weight: 600;
+}
+
+.setting-icon {
+    font-size: 1.3em;
+    color: var(--color-gray-600); /* Muted icon color */
+    flex-shrink: 0;
+}
+
+.setting-item .action-btn {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9em;
+    gap: 0.5rem;
+}
+
+.setting-item.delete-account-item .setting-label .error-icon {
+    color: var(--gradient-btn-delete-start); /* Red for delete icon */
+}
+
+/* Toggle Switch Styles (reused from Payment.css if applicable, but explicitly here) */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* Wider switch */
+    height: 28px; /* Taller switch */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-gray-400); /* Off state color */
+    transition: .4s;
+    border-radius: 28px; /* Rounded slider */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; /* Smaller circle */
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: var(--color-primary-600); /* On state color */
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--color-primary-600);
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px); /* Move circle to right */
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 28px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* --- Modal Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+    backdrop-filter: blur(5px); /* Subtle blur effect */
+}
+
+.modal-content {
+    background-color: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-2xl);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    animation: fadeInScale 0.3s ease-out forwards;
+    border: 1px solid var(--border-card);
+}
+
+.modal-content h3 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    color: var(--text-color-heading);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color-light);
+    font-weight: 800;
+}
+
+.modal-content .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.modal-content label {
+    font-weight: 600;
+    color: var(--text-color-default);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.modal-content .payment-input { /* Reusing input style from payment.css */
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color-light);
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: var(--color-gray-100);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color-light);
+}
+
+.modal-actions .cancel-link {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95em;
+    text-decoration: none;
+    color: var(--color-gray-600);
+}
+.modal-actions .cancel-link:hover {
+    color: var(--color-gray-800);
+    text-decoration: underline;
+}
+
+.modal-actions .action-btn { /* Reusing button styles */
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95em;
+}
+
+.modal-message {
+    font-size: 1.05em;
+    color: var(--text-color-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.delete-confirm-modal .modal-message {
+    color: var(--color-error-text);
+    font-weight: 500;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* --- Toast Message Styles --- */
+.toast-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95em;
+    box-shadow: var(--shadow-md);
+    z-index: 1001; /* Above modals */
+    animation: slideInRight 0.5s ease-out forwards, fadeOut 0.5s ease-in forwards 3.5s;
+}
+
+.toast-success {
+    background-color: var(--toast-success-bg);
+    color: var(--toast-success-text);
+    border: 1px solid var(--color-success-border);
+}
+
+.toast-error {
+    background-color: var(--toast-error-bg);
+    color: var(--toast-error-text);
+    border: 1px solid var(--color-error-border);
+}
+
+.toast-info {
+    background-color: var(--toast-info-bg);
+    color: var(--toast-info-text);
+    border: 1px solid var(--color-primary-300);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
 }
 
 
@@ -824,6 +1117,46 @@ body {
         padding: 1.5rem;
         margin-top: 1rem;
     }
+
+    /* Modal adjustments */
+    .modal-content {
+        padding: 2rem;
+        max-width: 450px;
+    }
+    .modal-content h3 {
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+    }
+    .modal-actions {
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+    }
+    .toast-message {
+        top: auto;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 40px);
+        text-align: center;
+    }
+    @keyframes slideInRight {
+        from {
+            transform: translateX(-50%) translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -925,9 +1258,39 @@ body {
     .address-note {
         font-size: 0.85em;
     }
+    /* Modal adjustments */
+    .modal-content {
+        padding: 1.5rem;
+    }
+    .modal-content h3 {
+        font-size: 1.4rem;
+    }
+    .modal-actions {
+        gap: 0.8rem;
+    }
+    .modal-actions .action-btn, .modal-actions .cancel-link {
+        padding: 0.7rem 1rem;
+        font-size: 0.9em;
+    }
+    .toast-message {
+        width: calc(100% - 30px);
+        left: 15px;
+        right: 15px;
+        transform: none;
+    }
+    @keyframes slideInRight {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
 }
 
-@media screen and (max-width: 480px) {
+@media (max-width: 480px) {
     .me-dashboard {
         padding: 0.8rem;
         gap: 0.8rem;
@@ -1025,5 +1388,33 @@ body {
     }
     .address-note {
         font-size: 0.8em;
+    }
+    /* Modal adjustments */
+    .modal-content {
+        padding: 1.2rem;
+        border-radius: 10px;
+    }
+    .modal-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    .modal-actions {
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+    .modal-actions .action-btn, .modal-actions .cancel-link {
+        width: 100%;
+        justify-content: center;
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85em;
+    }
+    .toast-message {
+        top: auto;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+        padding: 10px 15px;
+        font-size: 0.85em;
     }
 }
