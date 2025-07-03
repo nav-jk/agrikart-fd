@@ -132,12 +132,10 @@ const Me = () => {
 
     try {
       // Assuming the /api/v1/auth/me/ endpoint accepts PATCH for user fields
-      await api.patch('/api/v1/auth/me/', {
+      await api.put(`/api/v1/user/${profile.user.phone_number}/`, {
         username: editProfileData.username,
         email: editProfileData.email,
-        // phone_number is typically not editable via this endpoint or requires special handling
-        // If your backend requires phone_number for PUT/PATCH, ensure it's included and correct
-        // phone_number: profile.user.phone_number, 
+        phone_number: profile.user.phone_number, // required field for PUT
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -173,13 +171,12 @@ const Me = () => {
     try {
       // Assuming /api/v1/auth/me/ endpoint can accept nested updates for buyer address
       // Backend should handle updating the buyer's address associated with the user.
-      await api.patch('/api/v1/auth/me/', {
-        buyer: { // Assuming 'buyer' is a nested object in the PATCH payload
-          address: editAddressData.address,
-        }
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.put(`/api/v1/buyer/${profile.user.phone_number}/`, {
+      address: editAddressData.address,
+      user: profile.user.id // Ensure user ID is passed to associate it properly
+    }, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
       showToast('success', 'Address updated successfully!');
       setShowEditAddressModal(false);
@@ -243,34 +240,39 @@ const Me = () => {
   }, []);
 
   const handleDeleteAccount = useCallback(async () => {
-    setDeleteAccountLoading(true);
-    const token = localStorage.getItem('access');
+  setDeleteAccountLoading(true);
+  const token = localStorage.getItem('access');
 
-    if (!token || !profile?.user?.phone_number) {
-      showToast('error', 'Missing authentication or user phone number.');
-      setDeleteAccountLoading(false);
-      return;
-    }
+  if (!token || !profile?.user?.phone_number) {
+    showToast('error', 'Missing authentication or user phone number.');
+    setDeleteAccountLoading(false);
+    return;
+  }
 
-    try {
-      // In a real application, this would be a DELETE request to a specific user endpoint
-      // e.g., await api.delete('/api/v1/auth/me/', { headers: { Authorization: `Bearer ${token}` } });
-      
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500)); 
+  try {
+    // 🔥 Real DELETE request to backend
+    await api.delete(`/api/v1/buyer/${profile.user.phone_number}/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      showToast('success', 'Account successfully deleted. Redirecting...');
-      setShowDeleteAccountModal(false);
-      setDeleteAccountLoading(false);
-      logout(); // Log out the user
-      // Redirect to home or login page after deletion
-      // navigate('/'); 
-    } catch (err) {
-      console.error('Failed to delete account:', err.response?.data || err.message);
-      showToast('error', 'Failed to delete account. Please try again.');
-      setDeleteAccountLoading(false);
-    }
-  }, [profile, showToast, logout]);
+    showToast('success', 'Account successfully deleted. Redirecting...');
+    setShowDeleteAccountModal(false);
+
+    // Optional delay for UX
+    setTimeout(() => {
+      logout(); // Clear local storage, session, and auth state
+      window.location.href = '/'; // Redirect to homepage or login
+    }, 2000);
+  } catch (err) {
+    console.error('Failed to delete account:', err.response?.data || err.message);
+    const errorMessage =
+      err.response?.data?.detail || err.response?.data?.message || 'Failed to delete account.';
+    showToast('error', errorMessage);
+  } finally {
+    setDeleteAccountLoading(false);
+  }
+}, [profile, showToast, logout]);
+
 
   // Calculate the farmer from whom the buyer has bought the most
 // Top farmer calculation logic
