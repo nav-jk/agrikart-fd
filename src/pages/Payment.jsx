@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../styles/Payment.css';
+import '../styles/payment.css';
 
 // Import bank logos (you'll need to add these image files to your project)
 import axisBankLogo from '../assets/bank-logos/axis_bank.png';

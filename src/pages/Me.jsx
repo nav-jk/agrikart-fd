@@ -215,7 +215,7 @@ const Me = () => {
                                         </div>
                                         <div className="order-actions-header">
                                             {/* Receipt download button - now visible for CONFIRMED or DELIVERED */}
-                                            {(order.status === 'CONFIRMED' || order.status === 'DELIVERED' || order.status === 'PENDING' || order.status === 'IN_TRANSIT') && (
+                                            {(order.status === 'CONFIRMED' || order.status === 'DELIVERED' || order.status === 'PENDING' || order.status === 'IN_TRANSIT' || order.status === 'PICKED_UP') && (
                                                 <button
                                                     className="action-btn receipt-btn"
                                                     onClick={() => downloadReceipt(order.id)}

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import api from '../api/api';
+import api from '../api/api'; // Assuming this is your axios instance
 import { useAuth } from '../context/AuthContext';
-import '../styles/BuyerDashboard.css';
+import '../styles/BuyerDashboard.css'; // Your existing CSS
 
 const BuyerDashboard = () => {
   const [produce, setProduce] = useState([]);
@@ -10,28 +10,85 @@ const BuyerDashboard = () => {
   const [addedToCart, setAddedToCart] = useState({});
   const [quantityError, setQuantityError] = useState({});
   const [loading, setLoading] = useState(true);
-  const [fetchError, setFetchError] = useState(null); // New state for fetch errors
+  const [fetchError, setFetchError] = useState(null); // State for main data fetch errors
 
   const { user } = useAuth();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const categoryFilter = query.get('category');
 
+  // Placeholder for Pixabay API Key. REPLACE WITH YOUR ACTUAL KEY IN A REAL APP.
+  // Ideally, this should be handled server-side to prevent exposure.
+  const PIXABAY_API_KEY = '51158823-fea8dc7b468cfc132c8b5ede6'; // <--- Replace this with your key
+
+  // Function to fetch an image from Pixabay
+  const fetchProductImage = async (productName) => {
+    if (!PIXABAY_API_KEY || PIXABAY_API_KEY === 'YOUR_PIXABAY_API_KEY') {
+        console.warn("Pixabay API key is not set. Using placeholder images.");
+        return `https://placehold.co/400x300/e0ffe0/1b5e20?text=${productName.replace(/\s/g, '+')}`;
+    }
+
+    const searchQuery = encodeURIComponent(productName + ' vegetable'); // Add 'vegetable' for better results
+    const pixabayUrl = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&per_page=3`;
+
+    try {
+      const response = await fetch(pixabayUrl);
+      if (!response.ok) {
+        throw new Error(`Pixabay API error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      if (data.hits && data.hits.length > 0) {
+        // Return the URL of the first high-resolution image found
+        return data.hits[0].webformatURL; 
+      } else {
+        // No image found, return a generic placeholder or product name placeholder
+        return `https://placehold.co/400x300/cccccc/333333?text=${productName.replace(/\s/g, '+')}`;
+      }
+    } catch (error) {
+      console.error(`Error fetching image for ${productName}:`, error);
+      // Fallback to a placeholder if image fetching fails
+      return `https://placehold.co/400x300/cccccc/333333?text=Image+Not+Found`;
+    }
+  };
+
   useEffect(() => {
     setLoading(true);
     setFetchError(null); // Reset error on new fetch
+
     api.get('/api/v1/farmer/') // Assuming this endpoint returns an array of farmers, each with a 'produce' array
-      .then((res) => {
-        // Flatten the produce from all farmers into a single array for easier mapping
+      .then(async (res) => { // Mark as async to use await inside
+        // Flatten the produce from all farmers into a single array
         const allProduce = res.data.flatMap(farmer => 
           farmer.produce.map(item => ({
             ...item,
             farmerName: farmer.name, // Attach farmer's name to each produce item
-            // Placeholder image URL - in a real app, this would come from your backend
-            imageUrl: `https://placehold.co/400x300/e0ffe0/1b5e20?text=${item.name.replace(/\s/g, '+')}`
           }))
         );
-        setProduce(allProduce);
+
+        // Fetch images for all produce items concurrently
+        const produceWithImagesPromises = allProduce.map(async (item) => {
+          const imageUrl = await fetchProductImage(item.name);
+          return { ...item, imageUrl };
+        });
+
+        // Use Promise.allSettled to ensure all promises resolve (or reject)
+        // without stopping the entire process if one image fails.
+        const results = await Promise.allSettled(produceWithImagesPromises);
+
+        const produceWithImages = results.map((result, index) => {
+          if (result.status === 'fulfilled') {
+            return result.value;
+          } else {
+            // If an image fetch failed, use a generic fallback
+            console.warn(`Failed to get image for ${allProduce[index].name}:`, result.reason);
+            return { 
+              ...allProduce[index], 
+              imageUrl: `https://placehold.co/400x300/cccccc/333333?text=Image+Error` 
+            };
+          }
+        });
+
+        setProduce(produceWithImages);
         setLoading(false);
       })
       .catch((err) => {
@@ -52,16 +109,16 @@ const BuyerDashboard = () => {
     // Input validation
     if (!quantity || quantity <= 0 || quantity > maxQuantity) {
       setQuantityError(prev => ({ ...prev, [produceId]: true }));
-      // Provide a more specific alert based on validation
-      if (!quantity || quantity <= 0) alert('Please select a valid quantity (at least 1).');
-      else alert(`Quantity exceeds available stock of ${maxQuantity}.`);
+      // Using a custom message box instead of alert() as per instructions
+      // You'll need to implement a modal/message box component for this
+      console.log('Validation Error: Please select a valid quantity.'); // Log for now
       return;
     }
 
     try {
       // Ensure user is authenticated before adding to cart
       if (!user) {
-        alert('Please log in to add items to your cart.');
+        console.log('Authentication Error: Please log in to add items to your cart.'); // Log for now
         return;
       }
 
@@ -84,15 +141,15 @@ const BuyerDashboard = () => {
         setAddedToCart(prev => ({ ...prev, [produceId]: false }));
       }, 2000); // 2 seconds
 
-      alert('Item added to cart successfully!'); // User friendly feedback
+      console.log('Item added to cart successfully!'); // User friendly feedback
 
     } catch (err) {
       console.error('Add to cart error:', err.response?.data || err.message);
       // More specific error handling based on backend response
       if (err.response && err.response.data && err.response.data.error) {
-        alert(`Error adding to cart: ${err.response.data.error}`);
+        console.log(`Error adding to cart: ${err.response.data.error}`);
       } else {
-        alert('Error adding to cart. Please make sure you are logged in as a buyer and try again.');
+        console.log('Error adding to cart. Please make sure you are logged in as a buyer and try again.');
       }
     }
   };
@@ -122,7 +179,11 @@ const BuyerDashboard = () => {
                   src={item.imageUrl} 
                   alt={item.name} 
                   className="produce-image" 
-                  onError={(e) => { e.target.onerror = null; e.target.src = "https://placehold.co/400x300/cccccc/333333?text=Image+Not+Found"; }} // Fallback image
+                  onError={(e) => { 
+                    e.target.onerror = null; 
+                    // Fallback to a generic "Image Not Found" placeholder if the fetched URL breaks
+                    e.target.src = `https://placehold.co/400x300/cccccc/333333?text=Image+Not+Found`; 
+                  }} 
                 />
                 {item.category && (
                   <span className="produce-category-tag">{item.category}</span>
@@ -130,8 +191,8 @@ const BuyerDashboard = () => {
               </div>
               <div className="produce-details">
                 <h3 className="produce-name">{item.name}</h3>
-                <p className="produce-price">₹{parseFloat(item.price).toFixed(2)} / unit</p>
-                <p className="produce-stock">Stock: {item.quantity} units</p>
+                <p className="produce-price">₹{parseFloat(item.price).toFixed(2)} / kg</p>
+                <p className="produce-stock">Stock: {item.quantity} kg</p>
                 <p className="produce-farmer"><strong>Farmer:</strong> {item.farmerName}</p>
 
                 <div className="quantity-cart-actions">

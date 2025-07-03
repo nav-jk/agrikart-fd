@@ -3,30 +3,76 @@
 
 /* CSS Variables for consistent theming */
 :root {
-    --primary-green: #2e7d32; /* Dark green */
-    --secondary-green: #1b5e20; /* Even darker green for hover */
-    --accent-yellow: #ffd814; /* Bright yellow */
-    --text-color-dark: #333;
-    --text-color-medium: #666;
-    --text-color-light: #999;
-    --bg-light: #ffffff;
-    --bg-page: #f8fafc; /* Light grey background for the page */
-    --border-color: #e0e0e0;
-    --shadow-sm: rgba(0, 0, 0, 0.05);
-    --shadow-md: rgba(0, 0, 0, 0.1);
-    --shadow-lg: rgba(0, 0, 0, 0.2);
-    --gradient-btn-start: #4CAF50; /* Green button gradient start */
-    --gradient-btn-end: #2e7d32; /* Green button gradient end */
-    --gradient-btn-secondary-start: #ffc107; /* Yellow button gradient start */
-    --gradient-btn-secondary-end: #e0a800; /* Yellow button gradient end */
+    /* Primary Brand Colors (Greens) */
+    --color-primary-300: #a5d6a7; /* Light Green */
+    --color-primary-500: #4CAF50; /* Medium Green */
+    --color-primary-600: #388E3C; /* Darker Green */
+    --color-primary-700: #2E7D32; /* Even Darker Green */
+    --color-primary-800: #1B5E20; /* Deep Green */
+    --color-primary-900: #0D47A1; /* Darkest Green, almost navy for deep contrast */
+
+    /* Accent Colors (Yellow/Gold) */
+    --color-accent-300: #FFEB3B; /* Light Yellow */
+    --color-accent-400: #FFD814; /* Bright Yellow */
+    --color-accent-500: #FFC107; /* Gold */
+    --color-accent-600: #FFA000; /* Dark Gold */
+
+    /* Neutral Colors (Grays) */
+    --color-gray-50: #f9fafb; /* Very Light Gray */
+    --color-gray-100: #f3f4f6; /* Light Gray */
+    --color-gray-200: #e5e7eb; /* Off-white */
+    --color-gray-300: #d1d5db;
+    --color-gray-400: #9ca3af; /* Medium Gray */
+    --color-gray-500: #6b7280;
+    --color-gray-600: #4b5563;
+    --color-gray-700: #374151; /* Dark Gray */
+    --color-gray-800: #1f2937; /* Very Dark Gray */
+    --color-gray-900: #111827; /* Near Black */
+
+    /* Text Colors */
+    --text-color-default: var(--color-gray-800);
+    --text-color-light: var(--color-gray-500);
+    --text-color-heading: var(--color-gray-900);
+    --text-color-white: #ffffff;
+
+    /* Backgrounds */
+    --bg-page-light: var(--color-gray-50);
+    --bg-section-light: var(--color-gray-100);
+    --bg-section-green: var(--color-primary-50); /* Custom light green */
+
+    /* Borders */
+    --border-color-light: var(--color-gray-200);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Gradients */
+    --gradient-hero-start: var(--color-primary-300);
+    --gradient-hero-end: var(--color-gray-50);
+
+    --gradient-btn-primary-start: var(--color-primary-600);
+    --gradient-btn-primary-end: var(--color-primary-800);
+    --gradient-btn-primary-hover-start: var(--color-primary-700);
+    --gradient-btn-primary-hover-end: var(--color-primary-900);
+
+    --gradient-btn-secondary-start: var(--color-accent-500);
+    --gradient-btn-secondary-end: var(--color-accent-600);
+    --gradient-btn-secondary-hover-start: var(--color-accent-600);
+    --gradient-btn-secondary-hover-end: var(--color-accent-500);
 }
 
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
-    background-color: white;
-    color: var(--text-color-dark);
+    background-color: var(--bg-page-light);
+    color: var(--text-color-default);
     line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .home-page-wrapper {
@@ -40,83 +86,90 @@ body {
 /* --- Hero Section --- */
 .hero-section {
     width: 100%;
-    min-height: 80vh; /* Make hero section tall */
-    background:#f0f2f5;/* Subtle green gradient background */
+    min-height: 100vh; /* Full viewport height */
+    background: linear-gradient(to bottom right, var(--gradient-hero-start), var(--gradient-hero-end)); /* More vibrant gradient */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 40px; /* Generous padding */
+    padding: 60px 40px;
     box-sizing: border-box;
-    flex-wrap: wrap; /* Allow content to wrap */
-    gap: 40px; /* Space between text and image */
+    flex-wrap: wrap;
+    gap: 60px; /* Increased gap for better separation */
     position: relative;
     overflow: hidden;
 }
 
-/* Optional: Background graphic for hero */
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 200px;
-    height: 200px;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-    border-radius: 50%;
-}
+/* Background graphic for hero */
+.hero-section::before,
 .hero-section::after {
     content: '';
     position: absolute;
-    bottom: -80px;
-    right: -80px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); /* More subtle white circles */
+    border-radius: 50%;
+    z-index: 0;
+    animation: float 10s ease-in-out infinite alternate; /* Floating animation */
+}
+.hero-section::before {
+    top: -50px;
+    left: -50px;
     width: 250px;
     height: 250px;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-    border-radius: 50%;
+    animation-delay: 0s;
+}
+.hero-section::after {
+    bottom: -80px;
+    right: -80px;
+    width: 300px;
+    height: 300px;
+    animation-delay: 2s;
 }
 
+@keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(20px, 30px); }
+}
 
 .hero-content {
     flex: 1;
     min-width: 300px;
-    max-width: 600px;
+    max-width: 650px; /* Slightly wider content */
     text-align: left;
-    z-index: 1; /* Ensure text is above background graphics */
+    z-index: 1;
 }
 
 .hero-title {
     font-family: 'Nunito', sans-serif;
-    font-size: 3.8rem; /* Large, impactful title */
-    font-weight: 900; /* Extra bold */
-    color: var(--primary-green);
-    line-height: 1.1;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    font-size: 4.5rem; /* Even larger, more impactful title */
+    font-weight: 900;
+    color: var(--color-primary-800); /* Deeper green for title */
+    line-height: 1.05;
+    margin-bottom: 25px;
+    text-shadow: 3px 3px 8px rgba(0,0,0,0.2); /* Stronger shadow */
 }
 
 .hero-title .emoji {
-    font-size: 0.9em; /* Keep emojis relatively sized */
+    font-size: 0.9em;
     vertical-align: middle;
 }
 
 .hero-description {
-    font-size: 1.3rem; /* Prominent description */
-    color: var(--text-color-medium);
-    margin-bottom: 25px;
+    font-size: 1.4rem; /* More prominent description */
+    color: var(--color-gray-700); /* Darker gray for better contrast */
+    margin-bottom: 30px;
     line-height: 1.5;
 }
 
 .hero-subline {
-    font-size: 1.1rem;
-    color: var(--text-color-dark);
-    margin-bottom: 35px;
-    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--color-gray-800);
+    margin-bottom: 40px;
+    font-weight: 600; /* Slightly bolder */
 }
 
 .brand-name {
     font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    color: var(--secondary-green);
+    font-weight: 900; /* Extra bold */
+    color: var(--color-primary-700); /* Consistent brand color */
 }
 
 .hero-image-container {
@@ -132,256 +185,285 @@ body {
 .hero-image {
     max-width: 100%;
     height: auto;
-    border-radius: 15px; /* Rounded corners for image */
-    box-shadow: 0 15px 40px var(--shadow-md); /* Stronger shadow */
-    transition: transform 0.3s ease;
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 20px 50px var(--shadow-xl); /* Stronger, more diffused shadow */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transition */
 }
 .hero-image:hover {
-    transform: translateY(-5px); /* Lift on hover */
+    transform: translateY(-10px) scale(1.02); /* Lift higher and slightly scale on hover */
 }
 
-/* --- Auth Action Buttons (reusing styles but improving layout) --- */
+/* --- Auth Action Buttons --- */
 .auth-action-buttons {
     display: flex;
-    flex-wrap: wrap; /* Allow buttons to wrap */
-    gap: 15px; /* Space between buttons */
-    margin-top: 30px;
+    flex-wrap: wrap;
+    gap: 20px; /* Increased gap */
+    margin-top: 40px;
 }
 
 .btn {
-    padding: 14px 28px;
+    padding: 16px 32px; /* Larger padding for bigger buttons */
     border: none;
-    border-radius: 10px; /* More rounded buttons */
-    font-size: 1.05rem;
+    border-radius: 12px; /* More rounded buttons */
+    font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
-    text-decoration: none; /* Remove underline for links */
-    display: inline-flex; /* For consistent padding */
+    text-decoration: none;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px var(--shadow-sm);
-    letter-spacing: 0.3px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: var(--shadow-md); /* Consistent shadow */
+    letter-spacing: 0.5px; /* More prominent letter spacing */
     text-transform: uppercase;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--gradient-btn-start), var(--gradient-btn-end));
-    color: white;
+    background: linear-gradient(135deg, var(--gradient-btn-primary-start), var(--gradient-btn-primary-end));
+    color: var(--text-color-white);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--gradient-btn-end), var(--gradient-btn-start));
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px var(--shadow-md);
+    background: linear-gradient(135deg, var(--gradient-btn-primary-hover-start), var(--gradient-btn-primary-hover-end));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
     background: linear-gradient(135deg, var(--gradient-btn-secondary-start), var(--gradient-btn-secondary-end));
-    color: var(--text-color-dark);
+    color: var(--color-gray-900); /* Darker text for contrast */
 }
 
 .btn-secondary:hover {
-    background: linear-gradient(135deg, var(--gradient-btn-secondary-end), var(--gradient-btn-secondary-start));
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px var(--shadow-md);
+    background: linear-gradient(135deg, var(--gradient-btn-secondary-hover-start), var(--gradient-btn-secondary-hover-end));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-outline {
     background-color: transparent;
-    color: var(--primary-green);
-    border: 2px solid var(--primary-green);
-    box-shadow: none; /* No shadow by default */
+    color: var(--color-primary-700);
+    border: 2px solid var(--color-primary-700);
+    box-shadow: none;
 }
 
 .btn-outline:hover {
-    background-color: var(--primary-green);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px var(--shadow-sm); /* Subtle shadow on hover */
+    background-color: var(--color-primary-700);
+    color: var(--text-color-white);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
 }
 
 
-/* --- Category Section --- */
+/* --- Section Styling (General) --- */
 .category-section, .features-section, .cta-section {
     width: 100%;
-    max-width: 1200px; /* Max width for content sections */
-    padding: 80px 20px; /* Generous vertical padding */
+    max-width: 1200px;
+    padding: 100px 20px; /* More generous vertical padding */
     box-sizing: border-box;
     text-align: center;
 }
 
 .section-heading {
     font-family: 'Nunito', sans-serif;
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: var(--text-color-dark);
-    margin-bottom: 40px; /* Space below heading */
+    font-size: 3.5rem; /* Larger heading */
+    font-weight: 900;
+    color: var(--text-color-heading);
+    margin-bottom: 50px; /* Increased space below heading */
     position: relative;
-    padding-bottom: 15px;
+    padding-bottom: 20px; /* More space for underline */
 }
 .section-heading::after {
     content: '';
     display: block;
-    width: 100px;
-    height: 5px;
-    background-color: var(--accent-yellow);
-    margin: 15px auto 0;
-    border-radius: 3px;
+    width: 120px; /* Wider underline */
+    height: 6px; /* Thicker underline */
+    background-color: var(--color-accent-500); /* Gold underline */
+    margin: 20px auto 0; /* More space below */
+    border-radius: 4px;
 }
 
 
+/* --- Category Section --- */
 .category-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Flexible grid for categories */
-    gap: 30px; /* Space between cards */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Slightly larger min-width for cards */
+    gap: 35px; /* Increased gap */
 }
 
 .category-card {
-    background-color: var(--bg-light);
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 8px 25px var(--shadow-sm); /* Soft shadow */
-    overflow: hidden; /* Ensure image corners are rounded */
+    background-color: var(--text-color-white);
+    border-radius: 18px; /* More rounded corners */
+    box-shadow: var(--shadow-md); /* Soft shadow */
+    overflow: hidden;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom: 15px; /* Padding below label */
+    padding-bottom: 20px; /* More padding below label */
+    border: 1px solid var(--border-color-light); /* Subtle border */
 }
 
 .category-card:hover {
-    transform: translateY(-8px); /* Lift higher on hover */
-    box-shadow: 0 15px 35px var(--shadow-md); /* Stronger shadow on hover */
+    transform: translateY(-10px); /* Lift higher on hover */
+    box-shadow: var(--shadow-xl); /* Stronger shadow on hover */
+    border-color: var(--color-primary-500); /* Highlight border on hover */
 }
 
 .category-image-wrapper {
     width: 100%;
-    height: 150px; /* Fixed height for consistent images */
+    height: 180px; /* Taller image area */
     overflow: hidden;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .category-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Cover the area */
-    transition: transform 0.3s ease;
+    object-fit: cover;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother zoom */
 }
 
 .category-card:hover .category-image {
-    transform: scale(1.1); /* Zoom image on hover */
+    transform: scale(1.15); /* More pronounced zoom */
 }
 
 .category-label {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: var(--primary-green);
-    margin: 0; /* Remove default paragraph margin */
-    padding: 0 10px; /* Internal padding */
+    font-size: 1.25rem; /* Larger label */
+    font-weight: 800; /* Bolder */
+    color: var(--color-primary-700); /* Deeper green */
+    margin: 0;
+    padding: 0 15px; /* Internal padding */
 }
 
 /* --- Features Section --- */
 .features-section {
-    background-color: #f0fff0; /* Very light green background */
-    border-top: 1px solid #e0f2e0;
-    border-bottom: 1px solid #e0f2e0;
+    background-color: var(--bg-section-light); /* Light gray background */
+    border-top: 1px solid var(--border-color-light);
+    border-bottom: 1px solid var(--border-color-light);
 }
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px; /* Increased gap */
+    margin-top: 30px;
 }
 
 .feature-item {
-    background-color: var(--bg-light);
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 6px 20px var(--shadow-sm);
+    background-color: var(--text-color-white);
+    border-radius: 15px;
+    padding: 35px; /* More padding */
+    box-shadow: var(--shadow-md);
     text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border-color-light); /* Subtle border */
 }
 
 .feature-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px var(--shadow-md);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
 }
 
 .feature-icon {
-    font-size: 3.5rem;
-    color: var(--primary-green);
-    margin-bottom: 15px;
+    font-size: 4rem; /* Larger icon */
+    color: var(--color-primary-600); /* Darker green for icons */
+    margin-bottom: 20px;
 }
 
 .feature-title {
     font-family: 'Nunito', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-color-dark);
-    margin-bottom: 10px;
+    font-size: 1.8rem; /* Larger title */
+    font-weight: 900;
+    color: var(--text-color-heading);
+    margin-bottom: 12px;
 }
 
 .feature-description {
-    font-size: 0.95rem;
-    color: var(--text-color-medium);
+    font-size: 1rem; /* Slightly larger description */
+    color: var(--text-color-light);
 }
 
 /* --- CTA Section --- */
 .cta-section {
-    background-image: url('/hero-farm.jpg');
-    color: white;
-    padding: 80px 20px;
-    border-radius: 15px; /* Rounded section */
-    margin: 60px auto; /* Margin to separate it */
-    max-width: 1000px; /* Slightly smaller for focus */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    background-repeat: no-repeat;
+    background-image: url('/public/hero-farm.jpg'); /* Placeholder image */
+    background-position: center;
     background-size: cover;
+    position: relative;
+    color: var(--text-color-white);
+    padding: 100px 20px;
+    border-radius: 20px; /* More rounded section */
+    margin: 80px auto; /* More margin */
+    max-width: 1100px;
+    box-shadow: var(--shadow-2xl);
+    overflow: hidden; /* For overlay */
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better text readability */
+    border-radius: 20px; /* Match section border-radius */
+    z-index: 1;
+}
+
+.cta-section > * { /* Target direct children to be above overlay */
+    position: relative;
+    z-index: 2;
 }
 
 .cta-section .section-heading {
-    color: white; /* White heading on dark background */
-    margin-bottom: 25px;
-    padding-bottom: 10px;
+    color: var(--text-color-white);
+    margin-bottom: 35px;
+    padding-bottom: 15px;
 }
 .cta-section .section-heading::after {
-    background-color: white; /* White underline */
+    background-color: var(--color-accent-400); /* Accent yellow underline */
 }
 
 .cta-description {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    max-width: 700px;
+    font-size: 1.3rem;
+    margin-bottom: 50px; /* More space before buttons */
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    line-height: 1.7;
 }
 
 .cta-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    gap: 25px; /* Increased gap */
 }
 /* Adjust btn styles for CTA section for better contrast */
 .cta-buttons .btn {
-    border: 2px solid white; /* White border */
-    color: white;
-    background: rgba(255,255,255,0.15); /* Slightly transparent white background */
+    border: 2px solid var(--color-accent-400); /* Accent yellow border */
+    color: var(--text-color-white);
+    background: rgba(255,255,255,0.1); /* More transparent white background */
+    box-shadow: var(--shadow-md);
 }
 .cta-buttons .btn-primary:hover {
-    background: white;
-    color: var(--primary-green);
+    background: var(--color-accent-400); /* Solid accent yellow on hover */
+    color: var(--color-gray-900); /* Dark text on hover */
+    transform: translateY(-5px); /* More pronounced lift */
+    box-shadow: var(--shadow-xl);
 }
 .cta-buttons .btn-outline { /* For the logistics partner button */
     background: transparent;
-    border-color: white;
-    color: white;
+    border-color: var(--color-accent-400);
+    color: var(--text-color-white);
 }
 .cta-buttons .btn-outline:hover {
-    background: white;
-    color: var(--primary-green);
+    background: var(--color-accent-400);
+    color: var(--color-gray-900);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
 }
 
 
@@ -389,140 +471,166 @@ body {
 .home-footer {
     width: 100%;
     max-width: 1200px;
-    padding: 30px 20px;
-    margin-top: 50px;
-    border-top: 1px solid var(--border-color);
+    padding: 40px 20px; /* More padding */
+    margin-top: 80px; /* More margin from CTA */
+    border-top: 1px solid var(--border-color-light);
     text-align: center;
-    color: var(--text-color-medium);
-    font-size: 0.9rem;
+    color: var(--text-color-light);
+    font-size: 0.95rem; /* Slightly larger font */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 20px; /* Increased gap */
 }
 
 .footer-links {
     display: flex;
-    gap: 20px;
+    gap: 25px; /* Increased gap */
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .footer-links a {
-    color: var(--text-color-medium);
+    color: var(--text-color-light);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .footer-links a:hover {
-    color: var(--primary-green);
+    color: var(--color-primary-600); /* Darker green on hover */
     text-decoration: underline;
+    transform: translateY(-2px);
 }
 
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 1024px) {
     .hero-title {
-        font-size: 3.2rem;
+        font-size: 3.8rem;
     }
     .hero-description {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     .section-heading {
-        font-size: 2.4rem;
+        font-size: 3rem;
     }
     .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 20px;
-    }
-    .category-card {
-        padding-bottom: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 25px;
     }
     .category-image-wrapper {
-        height: 130px;
+        height: 160px;
     }
     .features-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+    }
+    .cta-section {
+        padding: 80px 20px;
     }
 }
 
 @media (max-width: 768px) {
     .hero-section {
         padding: 40px 20px;
-        flex-direction: column; /* Stack image below text */
+        flex-direction: column;
         text-align: center;
         min-height: auto;
+        gap: 40px;
     }
     .hero-content {
         max-width: 100%;
         text-align: center;
     }
     .hero-title {
-        font-size: 2.8rem;
+        font-size: 3rem;
+        margin-bottom: 20px;
     }
     .hero-description {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
+        margin-bottom: 25px;
+    }
+    .hero-subline {
+        font-size: 1rem;
+        margin-bottom: 30px;
     }
     .auth-action-buttons {
-        flex-direction: column; /* Stack buttons vertically */
+        flex-direction: column;
         align-items: center;
         width: 100%;
+        gap: 15px;
+        margin-top: 30px;
     }
-    .btn, .btn-outline {
-        width: 80%; /* Make buttons wider */
-        max-width: 300px;
+    .btn {
+        width: 80%;
+        max-width: 350px;
+        padding: 14px 28px;
+        font-size: 1rem;
     }
     .hero-image-container {
         margin-top: 30px;
     }
     .section-heading {
-        font-size: 2rem;
-        margin-bottom: 30px;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
     }
     .category-section, .features-section, .cta-section {
-        padding: 60px 15px;
+        padding: 70px 15px;
     }
     .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
     }
     .category-image-wrapper {
-        height: 120px;
+        height: 140px;
     }
     .category-label {
-        font-size: 1.05rem;
+        font-size: 1.1rem;
     }
     .features-grid {
         grid-template-columns: 1fr; /* Stack features vertically */
+        gap: 25px;
     }
     .feature-item {
-        padding: 25px;
+        padding: 30px;
+    }
+    .feature-icon {
+        font-size: 3.5rem;
+    }
+    .feature-title {
+        font-size: 1.6rem;
     }
     .cta-section {
-        padding: 50px 20px;
-        margin: 40px auto;
+        padding: 60px 20px;
+        margin: 60px auto;
     }
     .cta-description {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        margin-bottom: 40px;
     }
     .cta-buttons {
         flex-direction: column;
         align-items: center;
         width: 100%;
+        gap: 15px;
     }
     .cta-buttons .btn {
         width: 80%;
-        max-width: 300px;
+        max-width: 350px;
     }
     .home-footer {
-        padding: 25px 15px;
-        margin-top: 40px;
+        padding: 30px 15px;
+        margin-top: 50px;
+        font-size: 0.875rem;
+    }
+    .footer-links {
+        gap: 20px;
     }
 }
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 2.5rem;
     }
     .hero-description {
         font-size: 1rem;
@@ -530,36 +638,45 @@ body {
     .hero-subline {
         font-size: 0.9rem;
     }
-    .btn, .btn-outline {
-        padding: 12px 20px;
+    .btn {
+        padding: 12px 24px;
         font-size: 0.95rem;
     }
     .section-heading {
-        font-size: 1.8rem;
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    .section-heading::after {
+        width: 80px;
+        height: 4px;
+        margin: 10px auto 0;
     }
     .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 15px;
     }
     .category-image-wrapper {
-        height: 100px;
+        height: 120px;
     }
     .category-label {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
     .feature-item {
         padding: 20px;
     }
     .feature-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
     .feature-icon {
         font-size: 3rem;
     }
     .cta-section {
-        padding: 40px 15px;
+        padding: 50px 15px;
+        margin: 40px auto;
     }
     .cta-description {
         font-size: 1rem;
+        margin-bottom: 30px;
     }
     .home-footer {
         font-size: 0.8rem;

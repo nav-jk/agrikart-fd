@@ -66,7 +66,7 @@ const Login = () => {
       <div className="login-container">
         <form onSubmit={handleSubmit} className="login-form">
           <div className="login-header">
-            <h2 className="login-title">Sign in to AgriKart.ai</h2>
+            <h2 className="login-title">Sign in</h2>
           </div>
 
           {loginError && <p className="login-error-message">{loginError}</p>}

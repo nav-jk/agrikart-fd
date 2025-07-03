@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'; // Added useCallback
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/api';
 import { useNavigate, Link } from 'react-router-dom'; // Ensure Link is imported
@@ -12,6 +12,46 @@ const Cart = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  // IMPORTANT: Replace 'YOUR_PIXABAY_API_KEY' with your actual Pixabay API key.
+  // Obtain a key from https://pixabay.com/api/docs/
+  // In a production environment, it's highly recommended to proxy this through your backend
+  // to prevent exposing your API key and manage rate limits.
+  const PIXABAY_API_KEY = '51158823-fea8dc7b468cfc132c8b5ede6'; 
+
+  // Function to fetch images from Pixabay, returns an array of URLs
+  const fetchProductImages = useCallback(async (productName) => {
+    // Check if the API key is set. If not, log a warning and return an empty array.
+    if (!PIXABAY_API_KEY || PIXABAY_API_KEY === 'YOUR_PIXABAY_API_KEY') {
+        console.warn("Pixabay API key is not set or is the placeholder. Using generic placeholder images.");
+        return []; 
+    }
+
+    // Encode the product name for the URL query, adding 'vegetable' for better search results.
+    const searchQuery = encodeURIComponent(productName + ' vegetable'); 
+    // Request up to 10 images to have variety for products with the same name.
+    const pixabayUrl = `https://pixabay.com/api/?key=${PIXABAY_API_KEY}&q=${searchQuery}&image_type=photo&orientation=horizontal&per_page=10`;
+
+    try {
+      const response = await fetch(pixabayUrl);
+      // Check if the network request was successful.
+      if (!response.ok) {
+        throw new Error(`Pixabay API error: ${response.statusText} (Status: ${response.status})`);
+      }
+      const data = await response.json();
+      // If images are found, map them to an array of webformatURLs.
+      if (data.hits && data.hits.length > 0) {
+        return data.hits.map(hit => hit.webformatURL); 
+      } else {
+        // If no images are found for the search query, return an empty array.
+        return []; 
+      }
+    } catch (error) {
+      // Log any errors during the image fetching process.
+      console.error(`Error fetching images for "${productName}":`, error);
+      return []; // Return empty array on error to allow fallback.
+    }
+  }, [PIXABAY_API_KEY]); // Dependency on PIXABAY_API_KEY
+
   // Memoized fetchCart function using useCallback
   const fetchCart = useCallback(async () => {
     if (!user) {
@@ -22,19 +62,71 @@ const Cart = () => {
     setLoading(true);
     setError(null);
     try {
-      // Assuming buyer's cart is directly accessible via buyer's phone number or associated with user's session
-      // Endpoint: /api/v1/buyer/{phone_number}/ if the cart is part of the buyer profile
-      // OR a dedicated cart endpoint like /api/v1/cart/ if the backend infers user from token
-      // I'll stick to the original `/api/v1/buyer/${user.phone}/` as provided, assuming it returns `res.data.cart`
+      // Fetch cart data. Assuming the endpoint returns `res.data.cart` which contains cart items.
       const res = await api.get(`/api/v1/buyer/${user.phone}/`);
-      setCart(res.data.cart || []);
+      const cartItemsData = res.data.cart || [];
+
+      // A Map to store available image URLs for each unique product name
+      // and a counter to track which image has been assigned.
+      // Format: Map<productName, { urls: string[], currentIndex: number }>
+      const productImagePool = new Map(); 
+
+      // Create an array of promises, where each promise fetches an image for a produce item.
+      const cartItemsWithImagesPromises = cartItemsData.map(async (item) => {
+        let imageUrl = `https://placehold.co/100x100/cccccc/333333?text=Image+Not+Found`; // Default fallback image.
+
+        // Ensure produce_info and its name exist before attempting to fetch images.
+        const productName = item.produce_info?.name;
+        if (productName) {
+          // If images for this product name haven't been fetched yet, do it now.
+          if (!productImagePool.has(productName)) {
+            const urls = await fetchProductImages(productName);
+            productImagePool.set(productName, { urls: urls, currentIndex: 0 });
+          }
+
+          // Get the image pool entry for the current product name.
+          const poolEntry = productImagePool.get(productName);
+
+          // If there are available images in the pool, assign the next one.
+          if (poolEntry && poolEntry.urls.length > 0) {
+            imageUrl = poolEntry.urls[poolEntry.currentIndex];
+            // Increment the index, cycling back to 0 if it exceeds the array length.
+            poolEntry.currentIndex = (poolEntry.currentIndex + 1) % poolEntry.urls.length; 
+          } else {
+            // If no images were fetched or the pool is empty, use a product-specific placeholder.
+            imageUrl = `https://placehold.co/100x100/e0ffe0/1b5e20?text=${productName.replace(/\s/g, '+')}`;
+          }
+        }
+        
+        return { ...item, imageUrl };
+      });
+
+      // Wait for all image fetching promises to settle.
+      const results = await Promise.allSettled(cartItemsWithImagesPromises);
+
+      // Process the results to update the cart array with image URLs.
+      const finalCartItems = results.map((result, index) => {
+        if (result.status === 'fulfilled') {
+          return result.value; // Return the item with its fetched image URL.
+        } else {
+          // If any image fetching failed, log a warning and use a generic error placeholder.
+          console.warn(`Failed to assign image for cart item ${cartItemsData[index]?.produce_info?.name || 'unknown'}:`, result.reason);
+          return { 
+            ...cartItemsData[index], 
+            imageUrl: `https://placehold.co/100x100/cccccc/333333?text=Image+Error` 
+          };
+        }
+      });
+
+      setCart(finalCartItems); // Update the state with cart items including image URLs.
+
     } catch (err) {
       console.error('Error loading cart:', err);
       setError('Failed to load your cart. Please try again.');
     } finally {
       setLoading(false);
     }
-  }, [user]); // Dependency on user object
+  }, [user, fetchProductImages]); // Dependencies: user object and the memoized fetchProductImages
 
   useEffect(() => {
     fetchCart();
@@ -43,33 +135,53 @@ const Cart = () => {
   const updateQuantity = async (id, newQuantity) => {
     const quantity = parseInt(newQuantity);
     if (isNaN(quantity) || quantity < 1) {
-      // Optionally show a temporary message to the user here
-      console.warn("Invalid quantity. Must be at least 1.");
+      setError("Quantity must be at least 1.");
       return;
     }
+
+    const itemToUpdate = cart.find(item => item.id === id);
+    if (!itemToUpdate) return;
+
+    const maxStock = itemToUpdate.produce_info?.quantity || 0;
+    if (quantity > maxStock) {
+      setError(`Quantity for ${itemToUpdate.produce_info?.name || 'this item'} exceeds available stock of ${maxStock} kg.`);
+      return;
+    }
+
+    setError(null); // Clear any previous error messages
 
     // Optimistically update the cart state for better UX
     setCart(prev => prev.map(item => item.id === id ? { ...item, quantity } : item));
 
     try {
-      await api.patch(`/api/v1/cart/${id}/`, { quantity });
+      await api.patch(`/api/v1/cart/${id}/`, { quantity }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      });
       // If backend sends back the updated item, you might re-set cart here:
       // setCart(prev => prev.map(item => item.id === id ? res.data : item));
     } catch (err) {
-      console.error('Update quantity failed:', err);
-      setError('Failed to update quantity. Please refresh.'); // More generic error as optimistic update already happened
+      console.error('Update quantity failed:', err.response?.data || err.message);
+      setError('Failed to update quantity. Please refresh.'); 
       // Revert optimistic update if necessary
-      setCart(prev => prev.map(item => item.id === id ? { ...item, quantity: item.quantity } : item)); // Revert to old quantity
+      // This is a simple revert; for complex scenarios, consider a more robust rollback
+      setCart(prev => prev.map(item => item.id === id ? { ...item, quantity: itemToUpdate.quantity } : item)); 
     }
   };
 
   const removeItem = async (id) => {
     // Optimistically remove the item
     setCart(prev => prev.filter(item => item.id !== id));
+    setError(null); // Clear any previous error messages
     try {
-      await api.delete(`/api/v1/cart/${id}/`);
+      await api.delete(`/api/v1/cart/${id}/`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      });
     } catch (err) {
-      console.error('Remove item failed:', err);
+      console.error('Remove item failed:', err.response?.data || err.message);
       setError('Failed to remove item. Please refresh.');
       // Re-fetch cart if removal failed to sync state
       fetchCart();
@@ -96,7 +208,11 @@ const Cart = () => {
 
     try {
       // Step 1: Create order from cart
-      const createOrderRes = await api.post('/api/v1/orders/create-from-cart/');
+      const createOrderRes = await api.post('/api/v1/orders/create-from-cart/', {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access')}`,
+        },
+      });
       const orderId = createOrderRes.data.id;
       
       if (!orderId) {
@@ -163,7 +279,7 @@ const Cart = () => {
           <div className="empty-cart-state">
             <span className="empty-cart-icon">🛒</span>
             <p className="empty-message">Your cart is currently empty.</p>
-            <Link to="/products" className="continue-shopping-btn">
+            <Link to="/dashboard/buyer" className="continue-shopping-btn">
               <i className="fas fa-arrow-left"></i> Continue Shopping
             </Link>
           </div>
@@ -173,17 +289,21 @@ const Cart = () => {
               {cart.map(item => (
                 <div className="cart-item-card" key={item.id}>
                   <div className="item-image-wrapper">
-                    {/* Assuming produce_info has an image_url. Use a placeholder if not. */}
+                    {/* Use item.imageUrl which is fetched from Pixabay, with fallback */}
                     <img 
-                      src={item.produce_info?.image_url || 'https://via.placeholder.com/100x100?text=Produce'} 
+                      src={item.imageUrl} 
                       alt={item.produce_info?.name || 'Product'} 
                       className="item-image" 
+                      onError={(e) => { 
+                        e.target.onerror = null; 
+                        e.target.src = `https://placehold.co/100x100/cccccc/333333?text=Image+Not+Found`; 
+                      }} 
                     />
                   </div>
                   
                   <div className="item-details">
                     <h4 className="item-name">{item.produce_info?.name || 'Unknown Produce'}</h4>
-                    <p className="item-price">Price: ₹{parseFloat(item.produce_info?.price || 0).toFixed(2)} / {item.produce_info?.unit || 'unit'}</p>
+                    <p className="item-price">Price: ₹{parseFloat(item.produce_info?.price || 0).toFixed(2)} / {item.produce_info?.unit || 'kg'}</p>
                     <p className="item-farmer">Sold by: {item.produce_info?.farmer_username || 'AgriKart Farmer'}</p>
                   </div>
 
@@ -198,6 +318,8 @@ const Cart = () => {
                     <input
                       type="number"
                       min="1"
+                      // Ensure max quantity is based on available stock from produce_info
+                      max={item.produce_info?.quantity || 999} 
                       value={item.quantity}
                       onChange={(e) => updateQuantity(item.id, e.target.value)}
                       className="qty-input"
@@ -205,6 +327,7 @@ const Cart = () => {
                     <button 
                       className="qty-btn" 
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                      disabled={item.quantity >= (item.produce_info?.quantity || 999)}
                     >
                       +
                     </button>

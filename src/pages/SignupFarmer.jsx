@@ -79,7 +79,6 @@ const SignupFarmer = () => {
       <div className="signup-farmer-container">
         <form onSubmit={handleSubmit} className="signup-farmer-form">
           <div className="signup-farmer-header">
-            <span className="signup-farmer-icon" role="img" aria-label="tractor">🚜</span> {/* Changed icon for farmer */}
             <h2 className="signup-farmer-title">Join AgriKart.ai as a Farmer</h2>
           </div>
 
