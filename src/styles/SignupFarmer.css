@@ -1,0 +1,236 @@
+/* Import Google Fonts - Inter for body, Nunito for headings/brand */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800&display=swap');
+
+/* CSS Variables for consistent theming (reusing from Login.css/Me.css/Home.css) */
+:root {
+    --primary-green: #2e7d32; /* Dark green */
+    --secondary-green: #1b5e20; /* Even darker green */
+    --accent-yellow: #ffd814; /* Bright yellow */
+    --text-color-dark: #333;
+    --text-color-medium: #666;
+    --text-color-light: #999;
+    --bg-light: #ffffff;
+    --bg-page: #f0f2f5; /* Light grey background for the page */
+    --border-color: #e0e0e0;
+    --shadow-sm: rgba(0, 0, 0, 0.05);
+    --shadow-md: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.2);
+    --error-red: #dc3545;
+    --gradient-start: #4CAF50; /* Green for buttons */
+    --gradient-end: #2e7d32;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-color-dark);
+}
+
+.page-wrapper.signup-farmer-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    /* Use a background image consistent with other pages */
+    background-image: url('/hero-veg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.signup-farmer-container {
+    background-color: var(--bg-light);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--shadow-md);
+    padding: 40px;
+    width: 100%;
+    max-width: 500px; /* Slightly wider for more input fields */
+    box-sizing: border-box;
+    animation: fadeIn 0.8s ease-out; /* Fade-in animation */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.signup-farmer-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-farmer-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.signup-farmer-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.signup-farmer-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    color: var(--primary-green);
+    margin: 0;
+    font-weight: 800;
+}
+
+.signup-farmer-error-message {
+    background-color: #fcebeb;
+    color: var(--error-red);
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+    text-align: center;
+    box-shadow: 0 1px 3px var(--shadow-sm);
+}
+
+/* Reusing common form styles from Login/SignupBuyer */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    font-size: 0.95rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+    border-color: var(--primary-green);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.signup-farmer-button {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-color-light);
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.signup-farmer-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--gradient-end), var(--gradient-start));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.signup-farmer-button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+    opacity: 0.7;
+}
+
+.signup-farmer-footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.95rem;
+    color: var(--text-color-medium);
+}
+
+.login-link { /* Reusing login-link style for consistency */
+    color: var(--primary-green);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.login-link:hover {
+    color: var(--secondary-green);
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .signup-farmer-container {
+        padding: 30px;
+        border-radius: 10px;
+    }
+    .signup-farmer-title {
+        font-size: 1.8rem;
+    }
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    .form-input {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+    .signup-farmer-button {
+        font-size: 1.05rem;
+        padding: 12px 20px;
+    }
+    .signup-farmer-footer {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-farmer-container {
+        padding: 25px;
+        border-radius: 8px;
+    }
+    .signup-farmer-icon {
+        font-size: 2.5rem;
+    }
+    .signup-farmer-title {
+        font-size: 1.6rem;
+    }
+    .signup-farmer-error-message {
+        font-size: 0.85rem;
+        padding: 10px 12px;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .signup-farmer-button {
+        font-size: 1rem;
+        padding: 10px 15px;
+    }
+    .signup-farmer-footer {
+        font-size: 0.85rem;
+    }
+}

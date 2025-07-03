@@ -1,0 +1,308 @@
+/* General Body and Container Styles */
+body {
+    background-color: #f8fcf8; /* A very light green/off-white */
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Using a modern font */
+    color: #333;
+}
+
+.container {
+    padding: 2.5rem 2rem; /* Increased padding */
+    max-width: 1280px; /* Slightly wider container */
+    margin: 0 auto;
+    box-sizing: border-box; /* Include padding in element's total width/height */
+}
+
+/* Marketplace Header */
+.marketplace-title {
+    font-size: 2.2rem; /* Larger heading */
+    color: #1a5c20; /* Darker green */
+    margin-bottom: 2.5rem; /* More space below heading */
+    text-align: center; /* Center align title */
+    font-weight: 800; /* Extra bold */
+    letter-spacing: -0.5px;
+    position: relative;
+    padding-bottom: 15px; /* Space for underline effect */
+}
+
+.marketplace-title::after {
+    content: '';
+    display: block;
+    width: 80px; /* Short underline */
+    height: 4px;
+    background-color: #ffd814; /* Accent color */
+    margin: 10px auto 0; /* Center underline */
+    border-radius: 2px;
+}
+
+/* Loading, Error, Empty Messages */
+.loading-message, .error-message, .empty-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #666;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-top: 30px;
+}
+.error-message {
+    color: #d9534f; /* Red for errors */
+    background-color: #fef2f2;
+    border: 1px solid #f5c6cb;
+}
+
+
+/* Product Grid */
+.produce-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Slightly wider cards */
+    gap: 2.5rem; /* More space between cards */
+}
+
+/* Product Card */
+.produce-card {
+    background-color: #fff;
+    border: 1px solid #e8e8e8; /* Lighter border */
+    border-radius: 12px; /* More rounded corners */
+    overflow: hidden; /* Ensure image corners are rounded */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.produce-card:hover {
+    transform: translateY(-5px); /* Lift more */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12); /* Stronger shadow on hover */
+}
+
+/* Product Image */
+.produce-image-container {
+    width: 100%;
+    height: 180px; /* Fixed height for images */
+    overflow: hidden;
+    position: relative; /* For category tag positioning */
+}
+
+.produce-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container */
+    transition: transform 0.3s ease;
+}
+
+.produce-card:hover .produce-image {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.produce-category-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #1a5c20; /* Dark green */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Product Details */
+.produce-details {
+    padding: 1.5rem; /* Consistent padding */
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Allow details section to grow */
+}
+
+.produce-name {
+    font-size: 1.4rem; /* Larger and bolder name */
+    color: #222;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.produce-price {
+    font-size: 1.25rem; /* More prominent price */
+    color: #b12704; /* Distinct price color */
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.produce-stock, .produce-farmer {
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
+    color: #555;
+}
+
+.produce-farmer strong {
+    color: #333;
+    font-weight: 600;
+}
+
+
+/* Add to Cart Area */
+.quantity-cart-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* More space between select and button */
+    margin-top: 1.5rem; /* More space above */
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0; /* Separator line */
+}
+
+.qty-select {
+    appearance: none;
+    background-color: #f5f5f5; /* Lighter background */
+    border: 1px solid #ccc;
+    padding: 0.6rem 0.9rem; /* Increased padding */
+    font-size: 1rem;
+    border-radius: 8px; /* More rounded */
+    font-family: inherit;
+    cursor: pointer;
+    min-width: 90px; /* Slightly wider dropdown */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.9H5.4c-6.6%200-9.9%207.9-5.4%2013l141.2%20163.6c2.4%202.8%206.1%202.8%208.5%200L292.4%2082.9c4.5-5.1%201.2-13-5.4-13z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.qty-select:focus {
+    border-color: #2e7d32; /* Green focus border */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2); /* Green glow */
+}
+
+.qty-select.error {
+    border-color: #e53935; /* Red border for error */
+    background-color: #fff6f6;
+    box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2); /* Red glow */
+}
+
+.add-cart-btn {
+    background-color: #ffd814; /* Yellow button */
+    color: #111;
+    font-weight: bold;
+    border: none;
+    padding: 0.6rem 1.2rem; /* Consistent padding */
+    border-radius: 8px; /* More rounded */
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.25s ease;
+    flex-grow: 1; /* Allow button to grow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-cart-btn:hover:not(:disabled) {
+    background-color: #f7ca00; /* Darker yellow on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.add-cart-btn.added {
+    background-color: #d1e7dd; /* Light green for added */
+    color: #1a5c20; /* Dark green text */
+    cursor: default;
+    box-shadow: none; /* No shadow when added */
+    transform: translateY(0);
+}
+
+.add-cart-btn:disabled {
+    background-color: #e0e0e0; /* Grey for disabled */
+    color: #999;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+.qty-error-text {
+    color: #e53935; /* Red error text */
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    margin-left: 0.25rem;
+    font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+    .marketplace-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    .produce-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Adjust card size */
+        gap: 1.5rem;
+    }
+    .produce-image-container {
+        height: 160px;
+    }
+    .produce-details {
+        padding: 1.2rem;
+    }
+    .produce-name {
+        font-size: 1.2rem;
+    }
+    .produce-price {
+        font-size: 1.1rem;
+    }
+    .qty-select, .add-cart-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    .marketplace-title {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+    .produce-grid {
+        grid-template-columns: 1fr; /* Single column on very small screens */
+        gap: 1.2rem;
+    }
+    .produce-card {
+        padding-bottom: 1rem; /* Adjust card padding */
+    }
+    .produce-image-container {
+        height: 140px;
+    }
+    .produce-details {
+        padding: 1rem;
+    }
+    .produce-name {
+        font-size: 1.1rem;
+    }
+    .produce-price {
+        font-size: 1rem;
+    }
+    .quantity-cart-actions {
+        flex-direction: column; /* Stack quantity and button */
+        gap: 0.8rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+    }
+    .qty-select {
+        width: 100%;
+        min-width: unset;
+    }
+    .add-cart-btn {
+        width: 100%;
+    }
+    .produce-category-tag {
+        font-size: 0.75rem;
+        padding: 5px 10px;
+    }
+}

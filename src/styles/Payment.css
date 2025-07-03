@@ -1,0 +1,653 @@
+/* Overall Page Wrapper */
+.payment-page-wrapper {
+    font-family: 'Inter', Arial, sans-serif; /* Using Inter for consistency */
+    background-color: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Uniform padding */
+    box-sizing: border-box;
+}
+
+/* Fallback Error Screen for critical missing data */
+.fallback-error-screen {
+    justify-content: center; /* Center content vertically */
+}
+
+.payment-error-box {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    width: 400px;
+    max-width: 90%;
+}
+
+.error-title {
+    font-size: 1.8em;
+    color: #d9534f; /* Red */
+    margin-bottom: 15px;
+}
+
+.error-message-text {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.back-to-home-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.back-to-home-btn:hover {
+    background-color: #0056b3;
+}
+
+
+/* Header Bar for Merchant Info & Amount */
+.payment-header-bar {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    padding: 15px 25px; /* Increased padding */
+    width: 900px;
+    max-width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+    color: #555;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 5px 5px 0 0;
+    margin-bottom: -1px; /* Overlap with container border */
+}
+
+.merchant-info, .payment-amount-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.merchant-label, .amount-label {
+    font-weight: 600; /* Slightly bolder */
+    color: #333;
+    margin-bottom: 5px; /* Increased margin */
+    font-size: 0.85em;
+    text-transform: uppercase; /* Match image style */
+}
+
+.merchant-name, .amount-value {
+    font-size: 1.2em; /* Slightly larger */
+    color: #000;
+    font-weight: 700; /* Bold */
+}
+.amount-value {
+    color: #28a745; /* Green for amount */
+}
+
+
+/* Main Payment Container (Two Columns) */
+.payment-container-billdesk {
+    display: flex;
+    width: 900px;
+    max-width: 90%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-radius: 0 0 5px 5px;
+    min-height: 450px; /* Ensure minimum height */
+}
+
+/* Left Sidebar - Payment Methods */
+.payment-methods-sidebar {
+    width: 250px;
+    background-color: #eef5fa; /* Lighter blue */
+    border-right: 1px solid #e0e0e0; /* Subtle border */
+    padding: 15px 0; /* Increased padding */
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.method-item {
+    padding: 14px 20px; /* Increased padding */
+    cursor: pointer;
+    color: #444;
+    display: flex;
+    align-items: center;
+    font-size: 0.98em; /* Slightly larger */
+    border-bottom: 1px solid #f0f0f0; /* Very light separator */
+    position: relative;
+    transition: background-color 0.2s ease, color 0.2s ease, border-right 0.2s ease;
+}
+
+.method-item:last-child {
+    border-bottom: none;
+}
+
+.method-item:hover {
+    background-color: #ddebf7; /* Lighter hover */
+}
+
+.method-item.active {
+    background-color: #fff;
+    font-weight: bold;
+    color: #0056b3;
+    border-right: 4px solid #007bff; /* Distinct blue active indicator */
+    box-shadow: -3px 0 8px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+}
+
+.method-item i { /* Placeholder for icons */
+    margin-right: 12px; /* Increased margin */
+    font-size: 1.3em; /* Slightly larger icons */
+    display: inline-block;
+    width: 22px; /* Ensure consistent icon width */
+    text-align: center;
+    color: #666; /* Default icon color */
+}
+.method-item.active i {
+    color: #007bff; /* Active icon color */
+}
+
+/* Icon placeholders (using emojis for simplicity) */
+.icon-credit-card::before { content: '💳'; }
+.icon-debit-card::before { content: ' 💳 '; } /* Using same icon for debit, or find new one */
+.icon-atm-pin::before { content: ' 🏧 '; }
+.icon-internet-banking::before { content: ' 🌐 '; }
+.icon-upi::before { content: ' 🤳 '; }
+.icon-wallet::before { content: ' 👛 '; }
+
+
+.arrow-right {
+    position: absolute;
+    right: 15px;
+    font-size: 1.2em;
+    color: #999;
+}
+
+
+/* Main Content Area - Payment Form */
+.payment-main-content {
+    flex-grow: 1;
+    padding: 25px 30px; /* Increased padding */
+    background-color: #fff;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.payment-error-message {
+    color: #d9534f; /* Red for errors */
+    background-color: #fdf2f2; /* Very light red background */
+    border: 1px solid #f5c6cb; /* Red border */
+    padding: 12px 20px;
+    margin-bottom: 25px; /* Increased margin */
+    border-radius: 5px;
+    font-size: 0.95em;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.payment-form-section {
+    padding-bottom: 20px;
+}
+
+.internet-banking-section h3,
+.card-payment-section h3,
+.upi-payment-section h3,
+.wallet-payment-section h3 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.4em; /* Slightly larger heading */
+    margin-bottom: 25px; /* Increased margin */
+    border-bottom: 1px solid #eee; /* Subtle separator */
+    padding-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #666;
+    font-weight: 600;
+    margin-top: 20px; /* Increased margin */
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.popular-banks-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Increased gap */
+    margin-bottom: 30px; /* Increased margin */
+}
+
+.bank-logo-item {
+    display: block;
+    cursor: pointer;
+    border: 1px solid #e0e0e0; /* Lighter border */
+    border-radius: 8px; /* More rounded */
+    padding: 10px; /* Increased padding */
+    position: relative;
+    background-color: #ffffff;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle shadow */
+}
+
+.bank-logo-item:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4); /* More pronounced shadow */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.bank-radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.bank-logo-container {
+    width: 110px; /* Slightly larger */
+    height: 45px; /* Slightly larger */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.bank-logo {
+    max-width: 90%; /* Give some internal padding */
+    max-height: 90%;
+    object-fit: contain;
+}
+
+/* Radio button styling */
+.bank-radio-input + .bank-logo-container::before {
+    content: '';
+    position: absolute;
+    top: 8px; /* Adjust position */
+    left: 8px; /* Adjust position */
+    width: 18px; /* Slightly larger */
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.bank-radio-input:checked + .bank-logo-container::before {
+    border-color: #007bff;
+    background-color: #007bff;
+}
+
+.bank-radio-input:checked + .bank-logo-container::after {
+    content: '';
+    position: absolute;
+    top: 13px; /* Adjust position */
+    left: 13px; /* Adjust position */
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+
+.all-banks-label {
+    margin-top: 30px;
+}
+
+.all-banks-dropdown-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.all-banks-dropdown {
+    width: 100%;
+    padding: 12px 18px; /* Increased padding */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* More rounded */
+    background-color: #fff;
+    font-size: 1.05em; /* Slightly larger font */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.9H5.4c-6.6%200-9.9%207.9-5.4%2013l141.2%20163.6c2.4%202.8%206.1%202.8%208.5%200L292.4%2082.9c4.5-5.1%201.2-13-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Centered arrow */
+    background-size: 14px; /* Larger arrow */
+}
+
+.all-banks-dropdown:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+/* Common form group and input styles */
+.form-group {
+    margin-bottom: 20px; /* Increased margin */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px; /* Increased margin */
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.payment-input {
+    width: calc(100% - 24px); /* Account for padding and border */
+    padding: 12px; /* Increased padding */
+    border: 1px solid #ccc;
+    border-radius: 5px; /* More rounded */
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.payment-input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+
+/* UPI Section Specific Styles */
+.upi-or {
+    text-align: center;
+    margin: 25px 0; /* Increased margin */
+    color: #777;
+    font-weight: bold;
+    position: relative;
+    font-size: 1.1em;
+}
+.upi-or::before, .upi-or::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 35%; /* Adjust width */
+    height: 1px;
+    background: #e0e0e0; /* Lighter line */
+}
+.upi-or::before { left: 0; }
+.upi-or::after { right: 0; }
+
+.show-qr-btn, .back-to-upi-id-btn {
+    background-color: #28a745; /* Green for UPI actions */
+    color: white;
+    padding: 14px 25px; /* Increased padding */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.05em; /* Slightly larger font */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 15px; /* Increased margin */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.show-qr-btn:hover, .back-to-upi-id-btn:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.upi-qr-container {
+    text-align: center;
+    margin-top: 30px; /* Increased margin */
+}
+
+.upi-qr-code {
+    width: 220px; /* Slightly larger */
+    height: 220px; /* Slightly larger */
+    border: 1px solid #eee;
+    padding: 15px; /* Increased padding */
+    background-color: #f8f8f8;
+    border-radius: 8px; /* More rounded */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.upi-qr-instruction {
+    margin-top: 20px; /* Increased margin */
+    color: #555;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Wallet Section Specific Styles */
+.wallet-dropdown {
+    width: 100%;
+}
+
+.wallet-note {
+    font-size: 0.95em;
+    color: #777;
+    margin-top: 15px;
+    line-height: 1.5;
+}
+
+
+/* Payment Action Buttons (Common for all methods) */
+.payment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px; /* Increased gap */
+    margin-top: 30px; /* Increased margin */
+    padding-top: 20px; /* Increased padding */
+    border-top: 1px solid #eee;
+}
+
+.make-payment-btn {
+    background-color: #ffc107;
+    color: #333;
+    padding: 14px 30px; /* Increased padding */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.15em; /* Slightly larger font */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.3); /* Prominent shadow */
+}
+
+.make-payment-btn:hover:not(:disabled) {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.4);
+}
+
+.make-payment-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    color: #666666;
+    box-shadow: none; /* No shadow when disabled */
+    transform: translateY(0);
+}
+
+.cancel-link {
+    background: none;
+    border: none;
+    color: #007bff;
+    font-size: 1.05em; /* Slightly larger font */
+    cursor: pointer;
+    padding: 14px 18px; /* Adjusted padding */
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.cancel-link:hover {
+    color: #0056b3;
+}
+
+/* Footer Branding */
+.payment-footer {
+    margin-top: 25px; /* Increased margin */
+    margin-bottom: 25px; /* Increased margin */
+    text-align: right;
+    width: 900px;
+    max-width: 90%;
+    padding-right: 10px; /* Small padding to align with header */
+    box-sizing: border-box;
+}
+
+.billdesk-logo {
+    max-height: 30px; /* Slightly larger */
+    width: auto;
+    filter: grayscale(10%); /* Subtle desaturation */
+    opacity: 0.8;
+}
+
+.billdesk-text-logo {
+    font-weight: bold;
+    color: #555; /* Slightly muted */
+    font-size: 1.3em;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    .payment-header-bar,
+    .payment-container-billdesk,
+    .payment-footer {
+        width: 100%; /* Take full width on small screens */
+        max-width: 100%;
+        border-radius: 0; /* Remove border radius on full width */
+    }
+
+    .payment-container-billdesk {
+        flex-direction: column; /* Stack sidebar and main content */
+        border-radius: 0;
+    }
+
+    .payment-methods-sidebar {
+        width: 100%; /* Full width sidebar */
+        border-right: none;
+        border-bottom: 1px solid #e0e0e0; /* Add bottom border */
+        padding: 10px 0;
+        display: flex; /* Make methods horizontal scrollable */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        white-space: nowrap; /* Prevent wrapping */
+    }
+    /* Hide scrollbar for aesthetics */
+    .payment-methods-sidebar::-webkit-scrollbar {
+        display: none;
+    }
+    .payment-methods-sidebar {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+
+    .method-item {
+        flex-shrink: 0; /* Prevent items from shrinking */
+        padding: 10px 15px; /* Adjust padding for smaller items */
+        border-bottom: none; /* Remove bottom border for horizontal layout */
+        border-right: 1px solid #f0f0f0; /* Add right border for separation */
+    }
+    .method-item.active {
+        border-right: none;
+        border-bottom: 4px solid #007bff; /* Active indicator at bottom */
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); /* Shadow below */
+    }
+    .method-item:last-child {
+        border-right: none;
+    }
+
+    .method-item i {
+        margin-right: 8px;
+        font-size: 1.1em;
+    }
+    .arrow-right {
+        display: none; /* Hide arrow for horizontal layout */
+    }
+
+    .payment-main-content {
+        padding: 20px; /* Adjust padding */
+    }
+
+    .payment-header-bar {
+        flex-direction: column; /* Stack merchant info vertically */
+        align-items: flex-start;
+        padding-bottom: 10px;
+    }
+    .payment-amount-info {
+        align-self: flex-end; /* Align amount to right */
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-header-bar {
+        padding: 10px 15px;
+    }
+    .merchant-label, .amount-label {
+        font-size: 0.75em;
+    }
+    .merchant-name, .amount-value {
+        font-size: 1.05em;
+    }
+
+    .payment-main-content {
+        padding: 15px;
+    }
+    .internet-banking-section h3,
+    .card-payment-section h3,
+    .upi-payment-section h3,
+    .wallet-payment-section h3 {
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-row {
+        flex-direction: column; /* Stack card fields vertically */
+        gap: 15px;
+    }
+    .popular-banks-grid {
+        gap: 10px;
+        justify-content: center; /* Center bank logos */
+    }
+    .bank-logo-container {
+        width: 90px;
+        height: 35px;
+    }
+    .make-payment-btn {
+        padding: 12px 20px;
+        font-size: 1.05em;
+    }
+    .cancel-link {
+        padding: 12px 10px;
+        font-size: 0.95em;
+    }
+    .show-qr-btn, .back-to-upi-id-btn {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+    .upi-qr-code {
+        width: 180px;
+        height: 180px;
+        padding: 10px;
+    }
+}

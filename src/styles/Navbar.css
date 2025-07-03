@@ -1,0 +1,182 @@
+/* Import Google Fonts - Nunito for text, Inter for a modern touch */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* CSS Variables for theme consistency */
+:root {
+    --primary-green: #2e7d32; /* Dark green */
+    --secondary-green: #1b5e20; /* Even darker green for hover */
+    --accent-yellow: #ffd814; /* Bright yellow */
+    --text-color-dark: #333;
+    --text-color-light: #fff;
+    --border-color: #e0e0e0;
+    --background-light: #ffffff;
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+}
+
+.navbar {
+    font-family: 'Inter', sans-serif; /* Modern sans-serif font */
+    background-color: var(--background-light);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2.5rem; /* Increased horizontal padding */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure navbar stays on top */
+    box-shadow: 0 4px 15px var(--shadow-light); /* More noticeable shadow */
+}
+
+/* Brand Logo Styling */
+.navbar-left .navbar-brand {
+    font-family: 'Nunito', sans-serif; /* Keep Nunito for brand */
+    font-size: 1.8rem; /* Larger brand text */
+    font-weight: 800; /* Extra bold */
+    color: var(--primary-green);
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.2rem 0.5rem; /* Small padding for click area */
+    border-radius: 6px;
+}
+
+.navbar-left .navbar-brand:hover {
+    color: var(--secondary-green);
+    transform: translateY(-2px); /* Slight lift effect */
+    background-color: rgba(46, 125, 50, 0.05); /* Subtle background on hover */
+}
+
+.navbar-brand .brand-icon {
+    font-size: 1.5rem; /* Adjust icon size if needed */
+    margin-right: 2px; /* Small margin */
+}
+
+/* Right Navigation Links */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* More space between links */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.navbar-right .nav-link {
+    color: var(--text-color-dark);
+    font-weight: 600; /* Slightly bolder links */
+    text-decoration: none;
+    font-size: 0.98rem; /* Consistent font size */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Space between icon and text */
+    padding: 0.6rem 0.8rem; /* Padding for hover effect */
+    border-radius: 8px; /* Rounded corners for hover effect */
+    transition: color 0.2s ease, background-color 0.2s ease, transform 0.1s ease;
+}
+
+.navbar-right .nav-link:hover {
+    color: var(--primary-green);
+    background-color: rgba(46, 125, 50, 0.08); /* Light green background on hover */
+    transform: translateY(-1px); /* Slight lift on hover */
+}
+
+/* Specific style for the Login link if needed to stand out */
+.navbar-right .nav-link-login {
+    color: var(--primary-green);
+    border: 1px solid var(--primary-green);
+    background-color: transparent;
+}
+
+.navbar-right .nav-link-login:hover {
+    background-color: var(--primary-green);
+    color: var(--text-color-light);
+    transform: translateY(-1px);
+}
+
+
+/* Logout Button Styling */
+.btn-logout {
+    background-color: var(--primary-green);
+    color: white;
+    padding: 0.7rem 1.2rem; /* Increased padding */
+    border: none;
+    border-radius: 8px; /* More rounded corners */
+    font-weight: 700; /* Bolder text */
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.98rem; /* Match nav link size */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.25s ease, transform 0.1s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.2); /* Subtle shadow for button */
+}
+
+.btn-logout:hover {
+    background-color: var(--secondary-green);
+    transform: translateY(-1px); /* Slight lift */
+    box-shadow: 0 6px 15px rgba(46, 125, 50, 0.3); /* Enhanced shadow on hover */
+}
+
+/* Icon Styling */
+.nav-icon { /* Replaced .navbar i with .nav-icon for clarity */
+    font-size: 1.05rem; /* Slightly larger icons */
+    margin-right: 3px; /* Fine-tune spacing */
+    color: #666; /* Default icon color */
+}
+
+.nav-link:hover .nav-icon,
+.btn-logout .nav-icon {
+    color: inherit; /* Inherit color from parent on hover or for button */
+}
+
+.btn-logout .nav-icon {
+    color: var(--text-color-light); /* Ensure icons are white in logout button */
+}
+
+
+/* Mobile Responsive Adjustments */
+@media screen and (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 1.5rem;
+    }
+
+    .navbar-right {
+        margin-top: 1rem; /* More space between brand and links */
+        flex-direction: column; /* Stack links vertically */
+        align-items: flex-start; /* Align links to the left */
+        gap: 0.75rem; /* Closer vertical spacing */
+        width: 100%; /* Take full width */
+    }
+
+    .navbar-right .nav-link,
+    .btn-logout {
+        width: 100%; /* Full width for links and button */
+        justify-content: flex-start; /* Align text and icon to start */
+        padding: 0.8rem 1rem; /* Increased padding for better touch targets */
+    }
+
+    .navbar-brand {
+        font-size: 1.6rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+    .navbar-right {
+        margin-top: 0.8rem;
+    }
+    .navbar-right .nav-link,
+    .btn-logout {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.8rem;
+    }
+}

@@ -1,0 +1,570 @@
+/* Import Google Fonts - Inter for body, Nunito for headings/brand */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Nunito:wght@700;800;900&display=swap');
+
+/* CSS Variables for consistent theming */
+:root {
+    --primary-green: #2e7d32; /* Dark green */
+    --secondary-green: #1b5e20; /* Even darker green for hover */
+    --accent-yellow: #ffd814; /* Bright yellow */
+    --text-color-dark: #333;
+    --text-color-medium: #666;
+    --text-color-light: #999;
+    --bg-light: #ffffff;
+    --bg-page: #f8fafc; /* Light grey background for the page */
+    --border-color: #e0e0e0;
+    --shadow-sm: rgba(0, 0, 0, 0.05);
+    --shadow-md: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.2);
+    --gradient-btn-start: #4CAF50; /* Green button gradient start */
+    --gradient-btn-end: #2e7d32; /* Green button gradient end */
+    --gradient-btn-secondary-start: #ffc107; /* Yellow button gradient start */
+    --gradient-btn-secondary-end: #e0a800; /* Yellow button gradient end */
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: white;
+    color: var(--text-color-dark);
+    line-height: 1.6;
+}
+
+.home-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    width: 100%;
+    min-height: 80vh; /* Make hero section tall */
+    background:#f0f2f5;/* Subtle green gradient background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px; /* Generous padding */
+    box-sizing: border-box;
+    flex-wrap: wrap; /* Allow content to wrap */
+    gap: 40px; /* Space between text and image */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Optional: Background graphic for hero */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200px;
+    height: 200px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 250px;
+    height: 250px;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+
+.hero-content {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    text-align: left;
+    z-index: 1; /* Ensure text is above background graphics */
+}
+
+.hero-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 3.8rem; /* Large, impactful title */
+    font-weight: 900; /* Extra bold */
+    color: var(--primary-green);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.hero-title .emoji {
+    font-size: 0.9em; /* Keep emojis relatively sized */
+    vertical-align: middle;
+}
+
+.hero-description {
+    font-size: 1.3rem; /* Prominent description */
+    color: var(--text-color-medium);
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.hero-subline {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    margin-bottom: 35px;
+    font-weight: 500;
+}
+
+.brand-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    color: var(--secondary-green);
+}
+
+.hero-image-container {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.hero-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px; /* Rounded corners for image */
+    box-shadow: 0 15px 40px var(--shadow-md); /* Stronger shadow */
+    transition: transform 0.3s ease;
+}
+.hero-image:hover {
+    transform: translateY(-5px); /* Lift on hover */
+}
+
+/* --- Auth Action Buttons (reusing styles but improving layout) --- */
+.auth-action-buttons {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    gap: 15px; /* Space between buttons */
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px; /* More rounded buttons */
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline for links */
+    display: inline-flex; /* For consistent padding */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow-sm);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--gradient-btn-start), var(--gradient-btn-end));
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--gradient-btn-end), var(--gradient-btn-start));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow-md);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--gradient-btn-secondary-start), var(--gradient-btn-secondary-end));
+    color: var(--text-color-dark);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--gradient-btn-secondary-end), var(--gradient-btn-secondary-start));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px var(--shadow-md);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--primary-green);
+    border: 2px solid var(--primary-green);
+    box-shadow: none; /* No shadow by default */
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px var(--shadow-sm); /* Subtle shadow on hover */
+}
+
+
+/* --- Category Section --- */
+.category-section, .features-section, .cta-section {
+    width: 100%;
+    max-width: 1200px; /* Max width for content sections */
+    padding: 80px 20px; /* Generous vertical padding */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.section-heading {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--text-color-dark);
+    margin-bottom: 40px; /* Space below heading */
+    position: relative;
+    padding-bottom: 15px;
+}
+.section-heading::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 5px;
+    background-color: var(--accent-yellow);
+    margin: 15px auto 0;
+    border-radius: 3px;
+}
+
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Flexible grid for categories */
+    gap: 30px; /* Space between cards */
+}
+
+.category-card {
+    background-color: var(--bg-light);
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 8px 25px var(--shadow-sm); /* Soft shadow */
+    overflow: hidden; /* Ensure image corners are rounded */
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 15px; /* Padding below label */
+}
+
+.category-card:hover {
+    transform: translateY(-8px); /* Lift higher on hover */
+    box-shadow: 0 15px 35px var(--shadow-md); /* Stronger shadow on hover */
+}
+
+.category-image-wrapper {
+    width: 100%;
+    height: 150px; /* Fixed height for consistent images */
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.category-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the area */
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-image {
+    transform: scale(1.1); /* Zoom image on hover */
+}
+
+.category-label {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin: 0; /* Remove default paragraph margin */
+    padding: 0 10px; /* Internal padding */
+}
+
+/* --- Features Section --- */
+.features-section {
+    background-color: #f0fff0; /* Very light green background */
+    border-top: 1px solid #e0f2e0;
+    border-bottom: 1px solid #e0f2e0;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    background-color: var(--bg-light);
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 6px 20px var(--shadow-sm);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px var(--shadow-md);
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    color: var(--primary-green);
+    margin-bottom: 15px;
+}
+
+.feature-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-color-dark);
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    font-size: 0.95rem;
+    color: var(--text-color-medium);
+}
+
+/* --- CTA Section --- */
+.cta-section {
+    background-image: url('/hero-farm.jpg');
+    color: white;
+    padding: 80px 20px;
+    border-radius: 15px; /* Rounded section */
+    margin: 60px auto; /* Margin to separate it */
+    max-width: 1000px; /* Slightly smaller for focus */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cta-section .section-heading {
+    color: white; /* White heading on dark background */
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+}
+.cta-section .section-heading::after {
+    background-color: white; /* White underline */
+}
+
+.cta-description {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+/* Adjust btn styles for CTA section for better contrast */
+.cta-buttons .btn {
+    border: 2px solid white; /* White border */
+    color: white;
+    background: rgba(255,255,255,0.15); /* Slightly transparent white background */
+}
+.cta-buttons .btn-primary:hover {
+    background: white;
+    color: var(--primary-green);
+}
+.cta-buttons .btn-outline { /* For the logistics partner button */
+    background: transparent;
+    border-color: white;
+    color: white;
+}
+.cta-buttons .btn-outline:hover {
+    background: white;
+    color: var(--primary-green);
+}
+
+
+/* --- Footer --- */
+.home-footer {
+    width: 100%;
+    max-width: 1200px;
+    padding: 30px 20px;
+    margin-top: 50px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-color-medium);
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-links a {
+    color: var(--text-color-medium);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary-green);
+    text-decoration: underline;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 3.2rem;
+    }
+    .hero-description {
+        font-size: 1.2rem;
+    }
+    .section-heading {
+        font-size: 2.4rem;
+    }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 20px;
+    }
+    .category-card {
+        padding-bottom: 10px;
+    }
+    .category-image-wrapper {
+        height: 130px;
+    }
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 40px 20px;
+        flex-direction: column; /* Stack image below text */
+        text-align: center;
+        min-height: auto;
+    }
+    .hero-content {
+        max-width: 100%;
+        text-align: center;
+    }
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    .hero-description {
+        font-size: 1.1rem;
+    }
+    .auth-action-buttons {
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center;
+        width: 100%;
+    }
+    .btn, .btn-outline {
+        width: 80%; /* Make buttons wider */
+        max-width: 300px;
+    }
+    .hero-image-container {
+        margin-top: 30px;
+    }
+    .section-heading {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+    .category-section, .features-section, .cta-section {
+        padding: 60px 15px;
+    }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+    }
+    .category-image-wrapper {
+        height: 120px;
+    }
+    .category-label {
+        font-size: 1.05rem;
+    }
+    .features-grid {
+        grid-template-columns: 1fr; /* Stack features vertically */
+    }
+    .feature-item {
+        padding: 25px;
+    }
+    .cta-section {
+        padding: 50px 20px;
+        margin: 40px auto;
+    }
+    .cta-description {
+        font-size: 1.1rem;
+    }
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .cta-buttons .btn {
+        width: 80%;
+        max-width: 300px;
+    }
+    .home-footer {
+        padding: 25px 15px;
+        margin-top: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    .hero-description {
+        font-size: 1rem;
+    }
+    .hero-subline {
+        font-size: 0.9rem;
+    }
+    .btn, .btn-outline {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+    .section-heading {
+        font-size: 1.8rem;
+    }
+    .category-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    .category-image-wrapper {
+        height: 100px;
+    }
+    .category-label {
+        font-size: 0.95rem;
+    }
+    .feature-item {
+        padding: 20px;
+    }
+    .feature-title {
+        font-size: 1.3rem;
+    }
+    .feature-icon {
+        font-size: 3rem;
+    }
+    .cta-section {
+        padding: 40px 15px;
+    }
+    .cta-description {
+        font-size: 1rem;
+    }
+    .home-footer {
+        font-size: 0.8rem;
+    }
+    .footer-links {
+        gap: 15px;
+    }
+}

@@ -1,0 +1,672 @@
+/* Import Google Fonts and Font Awesome */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap');
+/* Make sure Font Awesome is linked in your index.html */
+/* e.g., <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> */
+
+
+/* CSS Variables for consistent theming */
+:root {
+    --primary-green: #2e7d32; /* Dark green */
+    --secondary-green: #1b5e20; /* Even darker green for hover */
+    --accent-yellow: #ffd814; /* Bright yellow */
+    --text-color-dark: #333;
+    --text-color-medium: #666;
+    --text-color-light: #999;
+    --bg-light: #ffffff;
+    --bg-page: #f0f2f5; /* Light grey background */
+    --border-color: #e0e0e0;
+    --shadow-sm: rgba(0, 0, 0, 0.05);
+    --shadow-md: rgba(0, 0, 0, 0.1);
+    --shadow-lg: rgba(0, 0, 0, 0.2);
+
+    /* Form and Button Colors */
+    --form-border: #cccccc;
+    --form-focus-border: #80bdff; /* Light blue */
+    --btn-primary-bg: var(--primary-green);
+    --btn-primary-hover: var(--secondary-green);
+    --btn-secondary-outline-border: #6c757d;
+    --btn-secondary-outline-text: #6c757d;
+    --btn-secondary-outline-hover-bg: #e2e6ea;
+    --btn-danger-bg: #dc3545; /* Red */
+    --btn-danger-hover: #c82333; /* Darker red */
+    --btn-cancel-bg: #6c757d; /* Grey */
+    --btn-cancel-hover: #5a6268; /* Darker grey */
+    --edit-btn-bg: #17a2b8; /* Teal */
+    --delete-btn-bg: #dc3545; /* Red */
+    --error-message-bg: #f8d7da; /* Light red */
+    --error-message-text: #721c24; /* Dark red */
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-color-dark);
+    line-height: 1.6;
+}
+
+.farmer-dashboard-wrapper {
+    min-height: calc(100vh - 80px); /* Adjust based on navbar height */
+    padding: 30px 20px;
+    box-sizing: border-box;
+    background-color: var(--bg-page);
+    display: flex;
+    justify-content: center;
+}
+
+/* Loading & Error States (reused pattern) */
+.farmer-dashboard-wrapper.loading-state,
+.farmer-dashboard-wrapper.error-state {
+    align-items: center;
+    text-align: center;
+    height: calc(100vh - 80px); /* Take full available height */
+}
+.loading-spinner {
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error-message-box {
+    background-color: var(--error-message-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px var(--shadow-md);
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid var(--error-red);
+    color: var(--error-message-text);
+}
+.error-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.error-description {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+}
+.refresh-btn {
+    background-color: var(--primary-green);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.refresh-btn:hover {
+    background-color: var(--secondary-green);
+    transform: translateY(-2px);
+}
+
+
+/* Main Grid Layout */
+.farmer-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 2.5fr; /* Sidebar takes 1 part, main content 2.5 parts */
+    gap: 30px;
+    width: 100%;
+    max-width: 1400px; /* Max width for the whole dashboard */
+}
+
+/* Sidebar Info Card */
+.sidebar-info-card {
+    background-color: var(--bg-light);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px var(--shadow-md);
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--primary-green);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.profile-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text-color-dark);
+}
+.profile-details-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.profile-details-list li:last-child {
+    margin-bottom: 0;
+}
+.profile-details-list strong {
+    font-weight: 600;
+    color: var(--secondary-green);
+}
+.profile-details-list .profile-icon {
+    color: var(--accent-yellow);
+    font-size: 1.1em;
+}
+
+.category-chart-card {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--border-color);
+}
+.chart-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+    text-align: center;
+}
+.chart-canvas-container {
+    position: relative; /* For responsive chart */
+    height: 300px; /* Set a fixed height for the chart container */
+    width: 100%;
+    margin-bottom: 15px;
+}
+.chart-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-color-medium);
+    font-style: italic;
+}
+
+
+/* Main Dashboard Panel */
+.main-dashboard-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.main-dashboard-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary-green);
+    margin-bottom: 10px; /* Space between title and first section */
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--accent-yellow);
+}
+
+/* Stats Cards Grid (reused from AdminDashboard for consistency) */
+.stats-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 25px;
+}
+
+.stats-cards-grid .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    text-align: center;
+    background-color: #f7fcf7; /* Lighter background for stats */
+    border: 1px solid #e9f2e9;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.stats-cards-grid .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-md);
+}
+
+.stats-cards-grid .stat-icon {
+    font-size: 3.5rem;
+    color: var(--primary-green);
+    margin-bottom: 15px;
+}
+
+.stats-cards-grid .stat-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color-medium);
+    margin-bottom: 10px;
+}
+
+.stats-cards-grid .stat-value {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--secondary-green);
+}
+
+
+/* Add/Edit Produce Form Card */
+.produce-form-card,
+.produce-list-card {
+    background-color: var(--bg-light);
+    border-radius: 15px;
+    box-shadow: 0 5px 20px var(--shadow-md);
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.form-error-message {
+    background-color: var(--error-message-bg);
+    color: var(--error-message-text);
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 20px; /* Space before form */
+    font-size: 0.95rem;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.produce-form-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid for fields */
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.field-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color-dark);
+    margin-bottom: 8px;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--form-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    background-color: white; /* Ensure white background for selects */
+    color: var(--text-color-dark);
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: var(--primary-green);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+.form-select {
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000%22%20d%3D%22M287%2069.9H5.4c-6.6%200-9.9%207.9-5.4%2013l141.2%20163.6c2.4%202.8%206.1%202.8%208.5%200L292.4%2082.9c4.5-5.1%201.2-13-5.4-13z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 10px;
+    padding-right: 30px; /* Space for custom arrow */
+}
+
+
+.form-actions {
+    grid-column: 1 / -1; /* Span full width of the grid */
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end; /* Align buttons to the right */
+    padding-top: 10px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--btn-primary-bg);
+    color: white;
+    box-shadow: 0 3px 10px rgba(46, 125, 50, 0.3);
+}
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--btn-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+}
+
+.btn-secondary-outline {
+    background-color: transparent;
+    color: var(--btn-secondary-outline-text);
+    border: 2px solid var(--btn-secondary-outline-border);
+    box-shadow: none;
+}
+.btn-secondary-outline:hover:not(:disabled) {
+    background-color: var(--btn-secondary-outline-hover-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.btn:disabled {
+    background-color: #cccccc;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: translateY(0);
+}
+
+
+/* Produce List Card */
+.produce-list-card {
+    margin-top: 30px; /* Space between form and list */
+}
+.no-items-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-color-medium);
+    padding: 30px 0;
+    background-color: #fcfcfc;
+    border-radius: 10px;
+    border: 1px dashed var(--border-color);
+}
+
+.produce-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr; /* Default to single column */
+    gap: 15px;
+}
+
+.produce-item {
+    background-color: #fcfcfc;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping of details/actions */
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.produce-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--shadow-md);
+}
+
+.item-details-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.item-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+.item-category {
+    font-size: 0.9rem;
+    color: var(--text-color-medium);
+    background-color: #e0f2f7; /* Light blue background for category */
+    padding: 4px 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+.item-details-sub {
+    display: flex;
+    gap: 20px;
+    font-size: 1rem;
+    color: var(--text-color-dark);
+    white-space: nowrap; /* Prevent price/qty from wrapping */
+}
+.item-price {
+    font-weight: 700;
+    color: var(--secondary-green);
+}
+.item-quantity {
+    font-weight: 500;
+}
+
+.item-actions-group {
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* Push actions to the right */
+}
+
+.action-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.edit-btn { background-color: var(--edit-btn-bg); }
+.edit-btn:hover { background-color: #0d96a8; transform: translateY(-2px); }
+
+.delete-btn { background-color: var(--delete-btn-bg); }
+.delete-btn:hover { background-color: #c82333; transform: translateY(-2px); }
+
+
+/* Confirmation Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Dark semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure modal is on top */
+}
+
+.modal-content {
+    background-color: var(--bg-light);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    animation: fadeInScale 0.3s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-title {
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--delete-btn-bg); /* Red for warning */
+    margin-bottom: 15px;
+}
+
+.modal-message {
+    font-size: 1.05rem;
+    color: var(--text-color-medium);
+    margin-bottom: 30px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-danger { background-color: var(--btn-danger-bg); color: white; }
+.btn-danger:hover:not(:disabled) { background-color: var(--btn-danger-hover); }
+
+.btn-cancel { background-color: var(--btn-cancel-bg); color: white; }
+.btn-cancel:hover:not(:disabled) { background-color: var(--btn-cancel-hover); }
+
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .farmer-dashboard-grid {
+        grid-template-columns: 1fr; /* Stack sidebar and main content */
+        gap: 20px;
+    }
+    .sidebar-info-card {
+        padding: 25px;
+    }
+    .main-dashboard-panel {
+        padding-top: 10px; /* Adjust spacing when stacked */
+    }
+    .main-dashboard-title {
+        font-size: 2.2rem;
+    }
+    .stats-cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 20px;
+    }
+    .produce-form-card,
+    .produce-list-card {
+        padding: 25px;
+    }
+    .produce-form-layout {
+        grid-template-columns: 1fr; /* Stack form fields vertically */
+    }
+    .form-actions {
+        justify-content: center; /* Center buttons when stacked */
+    }
+}
+
+@media (max-width: 768px) {
+    .farmer-dashboard-wrapper {
+        padding: 20px 10px;
+    }
+    .main-dashboard-title {
+        font-size: 2rem;
+    }
+    .stats-cards-grid {
+        grid-template-columns: 1fr; /* Stack stats cards vertically */
+    }
+    .stat-card {
+        padding: 20px;
+    }
+    .stat-icon {
+        font-size: 3rem;
+    }
+    .stat-title {
+        font-size: 1.1rem;
+    }
+    .stat-value {
+        font-size: 2rem;
+    }
+    .produce-item {
+        flex-direction: column; /* Stack item details and actions */
+        align-items: flex-start;
+        padding: 15px;
+        gap: 10px;
+    }
+    .item-details-main {
+        width: 100%;
+    }
+    .item-details-sub {
+        width: 100%;
+        justify-content: space-between; /* Spread price and quantity */
+    }
+    .item-actions-group {
+        width: 100%;
+        justify-content: space-around; /* Spread buttons */
+        margin-left: 0;
+        margin-top: 10px;
+        border-top: 1px dashed var(--border-color);
+        padding-top: 10px;
+    }
+    .action-btn {
+        flex-grow: 1;
+        text-align: center;
+        justify-content: center;
+    }
+    .modal-content {
+        padding: 25px;
+    }
+    .modal-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .farmer-dashboard-wrapper {
+        padding: 15px 5px;
+    }
+    .sidebar-info-card,
+    .produce-form-card,
+    .produce-list-card {
+        padding: 15px;
+    }
+    .card-title {
+        font-size: 1.4rem;
+    }
+    .main-dashboard-title {
+        font-size: 1.8rem;
+    }
+    .profile-details-list,
+    .chart-note,
+    .no-items-message,
+    .form-error-message {
+        font-size: 0.9rem;
+    }
+    .form-input,
+    .form-select {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    .item-name {
+        font-size: 1rem;
+    }
+    .item-details-sub {
+        font-size: 0.9rem;
+    }
+}
