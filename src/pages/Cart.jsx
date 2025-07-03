@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react'; // Added useCallback
 import { useAuth } from '../context/AuthContext';
 import api from '../api/api';
 import { useNavigate, Link } from 'react-router-dom'; // Ensure Link is imported
-import '../styles/cart.css'; // New styles for Cart
+import '../styles/Cart.css'; // New styles for Cart
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
